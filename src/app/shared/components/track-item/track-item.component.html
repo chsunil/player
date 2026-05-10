@@ -1,0 +1,55 @@
+<div
+  class="track-item"
+  [class.track-item--active]="active()"
+  role="button"
+  tabindex="0"
+  [attr.aria-label]="'Play ' + track().title"
+  (click)="onTap()"
+  (keydown.enter)="onTap()">
+
+  <!-- Index or artwork -->
+  <div class="track-left">
+    @if (showNum() && index() !== null) {
+      <span class="track-num" [class.track-num--active]="active()">
+        {{ active() ? '▶' : index()! + 1 }}
+      </span>
+    } @else {
+      <div class="artwork-wrap">
+        @if (track().artworkUri) {
+          <img
+            class="artwork"
+            [src]="track().artworkUri!"
+            [alt]="track().album"
+            loading="lazy"
+            draggable="false" />
+        } @else {
+          <div class="artwork artwork--placeholder">
+            <ion-icon name="musical-notes" aria-hidden="true"></ion-icon>
+          </div>
+        }
+      </div>
+    }
+  </div>
+
+  <!-- Title + artist -->
+  <div class="track-info">
+    <p class="track-title" [class.track-title--active]="active()">
+      {{ track().title }}
+    </p>
+    <p class="track-artist">{{ track().artist }}</p>
+  </div>
+
+  <!-- Duration + options -->
+  <div class="track-right">
+    <span class="track-duration">
+      {{ track().durationMs | duration }}
+    </span>
+    <button
+      class="options-btn"
+      [attr.aria-label]="'Options for ' + track().title"
+      (click)="onOptions($event)">
+      <ion-icon name="ellipsis-vertical" aria-hidden="true"></ion-icon>
+    </button>
+  </div>
+
+</div>

@@ -1,0 +1,37 @@
+<div
+  class="album-card"
+  [class]="'album-card--' + size()"
+  role="button"
+  tabindex="0"
+  [attr.aria-label]="album().title + ' by ' + album().artist"
+  (click)="onSelect()"
+  (keydown.enter)="onSelect()">
+
+  <div class="artwork-wrap">
+    @if (album().artworkUri) {
+      <img
+        class="artwork"
+        [src]="album().artworkUri!"
+        [alt]="album().title"
+        loading="lazy"
+        draggable="false" />
+    } @else {
+      <div class="artwork artwork--placeholder">
+        <ion-icon name="musical-notes" aria-hidden="true"></ion-icon>
+      </div>
+    }
+
+    <!-- Play button overlay -->
+    <button
+      class="play-overlay"
+      [attr.aria-label]="'Play ' + album().title"
+      (click)="onPlay($event)">
+      <ion-icon name="play-circle" aria-hidden="true"></ion-icon>
+    </button>
+  </div>
+
+  <div class="card-info">
+    <p class="card-title">{{ album().title }}</p>
+    <p class="card-artist">{{ album().artist }}</p>
+  </div>
+</div>

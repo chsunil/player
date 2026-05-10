@@ -1,0 +1,23 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-title>Nextcloud</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  @if (!store.isConnected()) {
+    <div class="connect-state">
+      <ion-icon name="cloud-outline" class="cloud-icon" aria-hidden="true"></ion-icon>
+      <h2 class="connect-title">Connect to Nextcloud</h2>
+      <p class="connect-subtitle">Stream and download your music from Nextcloud</p>
+      <ion-button expand="block" class="connect-btn">
+        Connect Account
+      </ion-button>
+    </div>
+  } @else {
+    <div class="browser-state">
+      <p class="path-label">{{ store.currentPath() }}</p>
+      <!-- File browser implemented in Phase 7 -->
+    </div>
+  }
+</ion-content>

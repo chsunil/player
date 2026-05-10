@@ -1,0 +1,22 @@
+<div
+  class="shortcut"
+  role="button"
+  tabindex="0"
+  [attr.aria-label]="item().title"
+  (click)="onSelect()"
+  (keydown.enter)="onSelect()">
+
+  <div class="shortcut__artwork">
+    @if (item().artworkUri) {
+      <img
+        [src]="item().artworkUri!"
+        [alt]="item().title"
+        loading="lazy"
+        draggable="false" />
+    } @else {
+      <ion-icon name="musical-notes" aria-hidden="true"></ion-icon>
+    }
+  </div>
+
+  <p class="shortcut__title">{{ item().title }}</p>
+</div>

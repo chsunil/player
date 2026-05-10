@@ -1,0 +1,47 @@
+ion-toolbar { --background: oklch(8% 0.018 280); }
+
+.connect-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 32px;
+  text-align: center;
+  min-height: 60vh;
+}
+
+.cloud-icon {
+  font-size: 72px;
+  color: oklch(42% 0.01 280);
+  margin-bottom: 20px;
+}
+
+.connect-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: oklch(93% 0.01 280);
+  margin: 0 0 8px;
+}
+
+.connect-subtitle {
+  font-size: 14px;
+  color: oklch(42% 0.01 280);
+  margin: 0 0 32px;
+  line-height: 1.5;
+}
+
+.connect-btn {
+  --background: oklch(65% 0.22 280);
+  --border-radius: 12px;
+  width: 100%;
+}
+
+.browser-state {
+  padding: 16px 20px;
+}
+
+.path-label {
+  font-size: 13px;
+  color: oklch(42% 0.01 280);
+  font-family: monospace;
+}

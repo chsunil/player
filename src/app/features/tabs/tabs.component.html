@@ -1,0 +1,74 @@
+<div class="shell">
+
+  <ion-tabs>
+    <ion-router-outlet></ion-router-outlet>
+
+    <ion-tab-bar slot="bottom" class="tab-bar">
+
+      <ion-tab-button tab="home" href="/tabs/home" class="tab-btn">
+        <svg class="tab-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H5a1 1 0 01-1-1V9.5z"
+                stroke="currentColor" stroke-width="1.8" fill="none" stroke-linejoin="round"/>
+          <path d="M9 21V12h6v9" stroke="currentColor" stroke-width="1.8"
+                fill="none" stroke-linejoin="round"/>
+        </svg>
+        <span class="tab-label">Home</span>
+      </ion-tab-button>
+
+      <ion-tab-button tab="search" href="/tabs/search" class="tab-btn">
+        <svg class="tab-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="10.5" cy="10.5" r="6.5"
+                  stroke="currentColor" stroke-width="1.8" fill="none"/>
+          <path d="M15.5 15.5L20 20" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round"/>
+        </svg>
+        <span class="tab-label">Search</span>
+      </ion-tab-button>
+
+      <ion-tab-button tab="library" href="/tabs/library" class="tab-btn">
+        <svg class="tab-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="3" y="3" width="7" height="7" rx="1"
+                stroke="currentColor" stroke-width="1.8" fill="none"/>
+          <rect x="14" y="3" width="7" height="7" rx="1"
+                stroke="currentColor" stroke-width="1.8" fill="none"/>
+          <rect x="3" y="14" width="7" height="7" rx="1"
+                stroke="currentColor" stroke-width="1.8" fill="none"/>
+          <rect x="14" y="14" width="7" height="7" rx="1"
+                stroke="currentColor" stroke-width="1.8" fill="none"/>
+        </svg>
+        <span class="tab-label">Library</span>
+      </ion-tab-button>
+
+      <ion-tab-button tab="nextcloud" href="/tabs/nextcloud" class="tab-btn">
+        <svg class="tab-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 16v-8m-4 4l4-4 4 4" stroke="currentColor" stroke-width="1.8"
+                stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          <path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1"
+                stroke="currentColor" stroke-width="1.8"
+                stroke-linecap="round" fill="none"/>
+        </svg>
+        <span class="tab-label">Cloud</span>
+      </ion-tab-button>
+
+    </ion-tab-bar>
+  </ion-tabs>
+
+  <!-- Mini player sits between content and tab bar -->
+  @if (playerStore.hasTrack()) {
+    <div class="mini-slot" (click)="openPlayer()">
+      <app-mini-player (expand)="openPlayer()" />
+    </div>
+  }
+
+</div>
+
+<!-- Full player modal -->
+<ion-modal
+  [isOpen]="playerStore.isFullPlayerOpen()"
+  cssClass="full-player-modal"
+  [canDismiss]="true"
+  (didDismiss)="closePlayer()">
+  <ng-template>
+    <app-full-player (dismiss)="closePlayer()" />
+  </ng-template>
+</ion-modal>

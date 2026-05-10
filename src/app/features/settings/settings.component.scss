@@ -1,0 +1,36 @@
+ion-toolbar { --background: oklch(8% 0.018 280); }
+
+ion-list {
+  --background: oklch(14% 0.018 280);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+ion-item {
+  --background: transparent;
+  --color: oklch(93% 0.01 280);
+  --border-color: oklch(100% 0 0 / 0.06);
+  font-size: 15px;
+}
+
+ion-toggle {
+  --track-background: oklch(21% 0.018 280);
+  --track-background-checked: oklch(65% 0.22 280);
+}
+
+.settings-container {
+  padding: 16px 20px 120px;
+}
+
+.settings-group {
+  margin-bottom: 24px;
+}
+
+.group-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: oklch(42% 0.01 280);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 0 0 8px 4px;
+}

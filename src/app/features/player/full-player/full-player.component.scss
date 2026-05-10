@@ -1,0 +1,324 @@
+:host {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+
+.full-player {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  background: oklch(8% 0.018 280);
+}
+
+/* ── Dynamic background ── */
+.bg-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.bg-artwork {
+  position: absolute;
+  inset: -20%;
+  width: 140%;
+  height: 140%;
+  object-fit: cover;
+  filter: blur(60px) saturate(200%) brightness(0.4);
+  transform: scale(1.1);
+}
+
+.bg-scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    oklch(5% 0.018 280 / 0.6) 0%,
+    oklch(5% 0.018 280 / 0.85) 50%,
+    oklch(5% 0.018 280 / 0.97) 100%
+  );
+}
+
+/* ── Content ── */
+.player-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: env(safe-area-inset-top, 20px) 0 env(safe-area-inset-bottom, 16px);
+}
+
+/* ── Header ── */
+.player-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 16px 0;
+  flex-shrink: 0;
+}
+
+.header-center {
+  text-align: center;
+}
+
+.now-playing-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: oklch(62% 0.015 280);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* ── Artwork ── */
+.artwork-section {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 32px;
+  min-height: 0;
+}
+
+.artwork-container {
+  width: 100%;
+  max-width: 320px;
+  aspect-ratio: 1;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 12px 48px oklch(0% 0 0 / 0.6), 0 4px 16px oklch(0% 0 0 / 0.4);
+  transition: transform 300ms cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 300ms ease;
+
+  &--playing {
+    transform: scale(1.04);
+    box-shadow: 0 20px 64px oklch(0% 0 0 / 0.7), 0 8px 24px oklch(0% 0 0 / 0.5);
+  }
+}
+
+.artwork {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+
+  &--placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: oklch(17% 0.018 280);
+    color: oklch(42% 0.01 280);
+    font-size: 64px;
+  }
+}
+
+/* ── Track info ── */
+.track-section {
+  padding: 0 24px;
+  flex-shrink: 0;
+}
+
+.track-meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.track-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.track-title {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+  color: oklch(93% 0.01 280);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.25;
+}
+
+.track-artist {
+  margin: 4px 0 0;
+  font-size: 15px;
+  font-weight: 400;
+  color: oklch(62% 0.015 280);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Seekbar ── */
+.seekbar-section {
+  padding: 20px 24px 8px;
+  flex-shrink: 0;
+}
+
+.seekbar-track {
+  position: relative;
+  height: 4px;
+  background: oklch(100% 0 0 / 0.12);
+  border-radius: 2px;
+  margin-bottom: 8px;
+}
+
+.seekbar-buffered {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  background: oklch(100% 0 0 / 0.2);
+  border-radius: 2px;
+  transition: width 300ms ease;
+}
+
+.seekbar-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  background: oklch(93% 0.01 280);
+  border-radius: 2px;
+  transition: width 500ms linear;
+  pointer-events: none;
+}
+
+.seekbar-input {
+  position: absolute;
+  inset: -12px 0;
+  height: calc(100% + 24px);
+  width: 100%;
+  opacity: 0;
+  cursor: pointer;
+  margin: 0;
+  touch-action: pan-x;
+}
+
+.seekbar-times {
+  display: flex;
+  justify-content: space-between;
+}
+
+.time-current,
+.time-total {
+  font-size: 12px;
+  font-weight: 500;
+  color: oklch(42% 0.01 280);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Controls ── */
+.controls-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 20px;
+  flex-shrink: 0;
+}
+
+.ctrl-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  color: oklch(93% 0.01 280);
+  transition: opacity 100ms ease, transform 100ms ease;
+  position: relative;
+  min-width: 44px;
+  min-height: 44px;
+
+  &:active {
+    opacity: 0.5;
+    transform: scale(0.9);
+  }
+
+  ion-icon {
+    pointer-events: none;
+  }
+
+  &--secondary {
+    color: oklch(62% 0.015 280);
+
+    ion-icon { font-size: 22px; }
+
+    &.ctrl-btn--active {
+      color: oklch(65% 0.22 280);
+    }
+  }
+
+  &--skip {
+    ion-icon { font-size: 32px; }
+  }
+
+  &--play {
+    ion-icon {
+      font-size: 72px;
+      color: oklch(93% 0.01 280);
+    }
+  }
+}
+
+.repeat-badge {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  font-size: 9px;
+  font-weight: 700;
+  color: oklch(65% 0.22 280);
+  line-height: 1;
+}
+
+/* ── Bottom ── */
+.bottom-section {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 4px 24px 8px;
+  flex-shrink: 0;
+}
+
+/* ── Icon buttons (header + bottom) ── */
+.icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  color: oklch(62% 0.015 280);
+  min-width: 44px;
+  min-height: 44px;
+  transition: opacity 100ms ease;
+
+  ion-icon {
+    font-size: 24px;
+    pointer-events: none;
+  }
+
+  &:active { opacity: 0.5; }
+
+  &--heart { color: oklch(93% 0.01 280); }
+}
+
+/* ── Spinner ── */
+.spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid oklch(93% 0.01 280 / 0.2);
+  border-top-color: oklch(93% 0.01 280);
+  border-radius: 50%;
+  animation: spin 700ms linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

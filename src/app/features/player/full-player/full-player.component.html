@@ -1,0 +1,167 @@
+<div class="full-player">
+
+  <!-- Dynamic background blur -->
+  <div class="bg-layer" aria-hidden="true">
+    @if (playerStore.currentTrack()?.artworkUri) {
+      <img
+        class="bg-artwork"
+        [src]="playerStore.currentTrack()!.artworkUri!"
+        alt=""
+        draggable="false" />
+    }
+    <div class="bg-scrim"></div>
+  </div>
+
+  <!-- Safe-area wrapper -->
+  <div class="player-content">
+
+    <!-- Header -->
+    <header class="player-header">
+      <button class="icon-btn" aria-label="Close player" (click)="onDismiss()">
+        <ion-icon name="chevron-down" aria-hidden="true"></ion-icon>
+      </button>
+
+      <div class="header-center">
+        <span class="now-playing-label">Now Playing</span>
+      </div>
+
+      <button class="icon-btn" aria-label="More options">
+        <ion-icon name="ellipsis-horizontal" aria-hidden="true"></ion-icon>
+      </button>
+    </header>
+
+    <!-- Artwork -->
+    <div class="artwork-section">
+      <div
+        class="artwork-container"
+        [class.artwork-container--playing]="playerStore.isPlaying()">
+        @if (playerStore.currentTrack()?.artworkUri) {
+          <img
+            #artworkImg
+            class="artwork"
+            [src]="playerStore.currentTrack()!.artworkUri!"
+            [alt]="playerStore.currentTrack()!.title"
+            (load)="onArtworkLoad($event)"
+            draggable="false" />
+        } @else {
+          <div class="artwork artwork--placeholder">
+            <ion-icon name="musical-notes" aria-hidden="true"></ion-icon>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Track info -->
+    <div class="track-section">
+      <div class="track-meta">
+        <div class="track-text">
+          <h1 class="track-title">
+            {{ playerStore.currentTrack()?.title || 'Unknown' }}
+          </h1>
+          <p class="track-artist">
+            {{ playerStore.currentTrack()?.artist || 'Unknown Artist' }}
+          </p>
+        </div>
+
+        <button class="icon-btn icon-btn--heart" aria-label="Add to favourites">
+          <ion-icon name="heart-outline" aria-hidden="true"></ion-icon>
+        </button>
+      </div>
+    </div>
+
+    <!-- Seekbar -->
+    <div class="seekbar-section">
+      <div class="seekbar-track">
+        <div class="seekbar-buffered"
+             [style.width.%]="playerStore.bufferedPercent()"
+             aria-hidden="true">
+        </div>
+        <div class="seekbar-fill"
+             [style.width.%]="displayProgress"
+             aria-hidden="true">
+        </div>
+        <input
+          type="range"
+          class="seekbar-input"
+          min="0"
+          max="100"
+          step="0.1"
+          [value]="displayProgress"
+          aria-label="Seek"
+          (mousedown)="onSeekStart()"
+          (touchstart)="onSeekStart()"
+          (input)="onSeekChange(+($any($event).target.value))"
+          (change)="onSeekEnd(+($any($event).target.value))" />
+      </div>
+
+      <div class="seekbar-times">
+        <span class="time-current">
+          {{ playerStore.progress().positionMs | duration }}
+        </span>
+        <span class="time-total">
+          {{ playerStore.progress().durationMs | duration }}
+        </span>
+      </div>
+    </div>
+
+    <!-- Playback controls -->
+    <div class="controls-section" role="group" aria-label="Playback controls">
+
+      <button
+        class="ctrl-btn ctrl-btn--secondary"
+        [class.ctrl-btn--active]="playerStore.shuffle()"
+        [attr.aria-label]="playerStore.shuffle() ? 'Disable shuffle' : 'Enable shuffle'"
+        (click)="toggleShuffle()">
+        <ion-icon [name]="shuffleIconName" aria-hidden="true"></ion-icon>
+      </button>
+
+      <button
+        class="ctrl-btn ctrl-btn--skip"
+        aria-label="Previous track"
+        (click)="previous()">
+        <ion-icon name="play-skip-back" aria-hidden="true"></ion-icon>
+      </button>
+
+      <button
+        class="ctrl-btn ctrl-btn--play"
+        [attr.aria-label]="playerStore.isPlaying() ? 'Pause' : 'Play'"
+        (click)="togglePlay()">
+        @if (playerStore.isLoading()) {
+          <div class="spinner" aria-hidden="true"></div>
+        } @else {
+          <ion-icon
+            [name]="playerStore.isPlaying() ? 'pause-circle' : 'play-circle'"
+            aria-hidden="true">
+          </ion-icon>
+        }
+      </button>
+
+      <button
+        class="ctrl-btn ctrl-btn--skip"
+        aria-label="Next track"
+        (click)="next()">
+        <ion-icon name="play-skip-forward" aria-hidden="true"></ion-icon>
+      </button>
+
+      <button
+        class="ctrl-btn ctrl-btn--secondary"
+        [class.ctrl-btn--active]="playerStore.repeat() !== 'none'"
+        [attr.aria-label]="'Repeat: ' + playerStore.repeat()"
+        (click)="cycleRepeat()">
+        <ion-icon [name]="repeatIconName" aria-hidden="true"></ion-icon>
+        @if (playerStore.repeat() === 'one') {
+          <span class="repeat-badge">1</span>
+        }
+      </button>
+
+    </div>
+
+    <!-- Bottom actions -->
+    <div class="bottom-section">
+      <button class="icon-btn" aria-label="Open queue">
+        <ion-icon name="list-outline" aria-hidden="true"></ion-icon>
+      </button>
+    </div>
+
+  </div>
+</div>

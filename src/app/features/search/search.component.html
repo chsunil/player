@@ -1,0 +1,38 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-searchbar
+      placeholder="Artists, songs, albums…"
+      [debounce]="200"
+      autofocus
+      (ionInput)="onSearch($event)">
+    </ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  @if (!query()) {
+    <div class="hint-state">
+      <p>Search your library</p>
+    </div>
+  } @else if (results().length === 0) {
+    <div class="hint-state">
+      <p>No results for "{{ query() }}"</p>
+    </div>
+  } @else {
+    <div class="results-list">
+      @for (track of results(); track track.id) {
+        <div class="result-item">
+          <div class="result-artwork">
+            @if (track.artworkUri) {
+              <img [src]="track.artworkUri" [alt]="track.album" />
+            }
+          </div>
+          <div class="result-info">
+            <p class="result-title">{{ track.title }}</p>
+            <p class="result-sub">{{ track.artist }} · {{ track.album }}</p>
+          </div>
+        </div>
+      }
+    </div>
+  }
+</ion-content>

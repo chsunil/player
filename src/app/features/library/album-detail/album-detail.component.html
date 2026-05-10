@@ -1,0 +1,84 @@
+<ion-content [fullscreen]="true" [scrollY]="true">
+
+  <div class="detail">
+
+    <!-- ── Hero ── -->
+    <div class="hero">
+
+      <!-- Artwork fills the hero -->
+      @if (album()?.artworkUri) {
+        <img
+          class="hero__art"
+          [src]="album()!.artworkUri!"
+          [alt]="album()!.title"
+          draggable="false" />
+      } @else {
+        <div class="hero__art hero__art--placeholder">
+          <ion-icon name="musical-notes" aria-hidden="true"></ion-icon>
+        </div>
+      }
+
+      <!-- Gradient overlay -->
+      <div class="hero__gradient" aria-hidden="true"></div>
+
+      <!-- Back button (top-left) -->
+      <div class="hero__nav">
+        <button class="nav-btn" aria-label="Go back" (click)="goBack()">
+          <ion-icon name="arrow-back" aria-hidden="true"></ion-icon>
+        </button>
+        <button class="nav-btn" aria-label="More options">
+          <ion-icon name="ellipsis-horizontal" aria-hidden="true"></ion-icon>
+        </button>
+      </div>
+
+      <!-- Album meta over gradient -->
+      <div class="hero__meta">
+        <h1 class="hero__title">{{ album()?.title || 'Unknown Album' }}</h1>
+        <p class="hero__artist">{{ album()?.artist || 'Unknown Artist' }}</p>
+        <p class="hero__info">
+          {{ album()?.trackCount || tracks().length }} songs
+          · {{ totalDurationMs() | duration }}
+        </p>
+      </div>
+    </div>
+
+    <!-- ── Action row ── -->
+    <div class="actions">
+
+      <button class="action-btn" aria-label="Like album" (click)="toggleLike()">
+        <ion-icon [name]="liked() ? 'heart' : 'heart-outline'" aria-hidden="true"></ion-icon>
+      </button>
+
+      <div class="actions__right">
+        <button class="action-btn" aria-label="Shuffle" (click)="playShuffle()">
+          <ion-icon name="shuffle" aria-hidden="true"></ion-icon>
+        </button>
+
+        <button class="play-btn" aria-label="Play album" (click)="playAll()">
+          <ion-icon name="play-circle" aria-hidden="true"></ion-icon>
+        </button>
+      </div>
+    </div>
+
+    <!-- ── Track list ── -->
+    <div class="track-list">
+      @for (track of tracks(); track track.id; let i = $index) {
+        <app-track-item
+          [track]="track"
+          [index]="i"
+          [showNum]="true"
+          [active]="playerStore.currentTrack()?.id === track.id"
+          (play)="onTrackPlay($event)" />
+      }
+
+      @if (tracks().length === 0) {
+        <div class="empty">
+          <p>No tracks found</p>
+        </div>
+      }
+    </div>
+
+    <div class="bottom-spacer"></div>
+  </div>
+
+</ion-content>

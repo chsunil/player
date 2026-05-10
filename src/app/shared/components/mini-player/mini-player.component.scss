@@ -1,0 +1,140 @@
+:host { display: block; }
+
+/* ── Mini player bar — Spotify style ── */
+.mini {
+  position: relative;
+  background: oklch(21% 0.018 280);
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
+  transition: filter 100ms ease;
+
+  &:active { filter: brightness(1.1); }
+}
+
+/* Slim progress at very top */
+.mini__progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: oklch(100% 0 0 / 0.12);
+}
+
+.mini__progress-fill {
+  height: 100%;
+  background: oklch(93% 0.01 280);
+  border-radius: 0 1px 1px 0;
+  transition: width 500ms linear;
+  will-change: width;
+}
+
+/* Body row */
+.mini__body {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 6px 6px 8px;
+  min-height: 62px;
+}
+
+/* Artwork */
+.mini__art {
+  width: 46px;
+  height: 46px;
+  border-radius: 6px;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: oklch(14% 0.018 280);
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+}
+
+.mini__art-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: oklch(42% 0.01 280);
+  font-size: 20px;
+}
+
+/* Text */
+.mini__meta {
+  flex: 1;
+  min-width: 0;
+}
+
+.mini__title {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: oklch(93% 0.01 280);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.3;
+}
+
+.mini__artist {
+  margin: 2px 0 0;
+  font-size: 12px;
+  color: oklch(62% 0.015 280);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.3;
+}
+
+/* Actions */
+.mini__actions {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  flex-shrink: 0;
+}
+
+.mini__btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 50%;
+  color: oklch(93% 0.01 280);
+  min-width: 44px;
+  min-height: 44px;
+  transition: opacity 80ms ease;
+
+  ion-icon {
+    font-size: 22px;
+    pointer-events: none;
+  }
+
+  &:active { opacity: 0.5; }
+
+  &--play ion-icon { font-size: 26px; }
+}
+
+/* Loading spinner */
+.mini__spinner {
+  width: 22px;
+  height: 22px;
+  border: 2px solid oklch(93% 0.01 280 / 0.25);
+  border-top-color: oklch(93% 0.01 280);
+  border-radius: 50%;
+  animation: spin 700ms linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }

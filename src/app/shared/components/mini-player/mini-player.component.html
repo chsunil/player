@@ -1,0 +1,69 @@
+<div
+  class="mini"
+  role="complementary"
+  aria-label="Now playing"
+  (click)="onExpand($event)"
+  (keydown.enter)="onExpand($event)"
+  tabindex="0">
+
+  <!-- Progress line at very top -->
+  <div class="mini__progress" aria-hidden="true">
+    <div class="mini__progress-fill" [style.width.%]="store.progressPercent()"></div>
+  </div>
+
+  <div class="mini__body">
+
+    <!-- Artwork -->
+    <div class="mini__art" aria-hidden="true">
+      @if (store.currentTrack()?.artworkUri) {
+        <img
+          [src]="store.currentTrack()!.artworkUri!"
+          [alt]="store.currentTrack()!.album"
+          draggable="false" />
+      } @else {
+        <div class="mini__art-placeholder">
+          <ion-icon name="musical-notes" aria-hidden="true"></ion-icon>
+        </div>
+      }
+    </div>
+
+    <!-- Title + artist -->
+    <div class="mini__meta">
+      <p class="mini__title">{{ store.currentTrack()?.title || 'Not playing' }}</p>
+      <p class="mini__artist">{{ store.currentTrack()?.artist || '' }}</p>
+    </div>
+
+    <!-- Actions -->
+    <div class="mini__actions" role="group" aria-label="Player controls">
+
+      <!-- Heart -->
+      <button class="mini__btn" aria-label="Like">
+        <ion-icon name="heart-outline" aria-hidden="true"></ion-icon>
+      </button>
+
+      <!-- Play / Pause -->
+      <button
+        class="mini__btn mini__btn--play"
+        [attr.aria-label]="store.isPlaying() ? 'Pause' : 'Play'"
+        (click)="togglePlay($event)">
+        @if (store.isLoading()) {
+          <div class="mini__spinner" aria-hidden="true"></div>
+        } @else {
+          <ion-icon
+            [name]="store.isPlaying() ? 'pause' : 'play'"
+            aria-hidden="true">
+          </ion-icon>
+        }
+      </button>
+
+      <!-- Next -->
+      <button
+        class="mini__btn"
+        aria-label="Next track"
+        (click)="skipNext($event)">
+        <ion-icon name="play-skip-forward" aria-hidden="true"></ion-icon>
+      </button>
+
+    </div>
+  </div>
+</div>

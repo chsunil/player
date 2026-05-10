@@ -1,0 +1,62 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-title>Settings</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="settings-container">
+
+    <section class="settings-group">
+      <h3 class="group-title">Library</h3>
+      <ion-list>
+        <ion-item button detail (click)="scanLibrary()">
+          <ion-label>Scan Device Music</ion-label>
+        </ion-item>
+      </ion-list>
+    </section>
+
+    <section class="settings-group">
+      <h3 class="group-title">Playback</h3>
+      <ion-list>
+        <ion-item>
+          <ion-label>Gapless Playback</ion-label>
+          <ion-toggle
+            slot="end"
+            [checked]="settings.gaplessPlayback()"
+            (ionChange)="onGaplessChange($event)">
+          </ion-toggle>
+        </ion-item>
+      </ion-list>
+    </section>
+
+    <section class="settings-group">
+      <h3 class="group-title">Appearance</h3>
+      <ion-list>
+        <ion-item>
+          <ion-label>Dynamic Colors</ion-label>
+          <ion-toggle
+            slot="end"
+            [checked]="settings.dynamicColor()"
+            (ionChange)="onDynamicColorChange($event)">
+          </ion-toggle>
+        </ion-item>
+      </ion-list>
+    </section>
+
+    <section class="settings-group">
+      <h3 class="group-title">Sync</h3>
+      <ion-list>
+        <ion-item>
+          <ion-label>Sync on Wi-Fi only</ion-label>
+          <ion-toggle
+            slot="end"
+            [checked]="settings.syncOnWifiOnly()"
+            (ionChange)="onSyncWifiChange($event)">
+          </ion-toggle>
+        </ion-item>
+      </ion-list>
+    </section>
+
+  </div>
+</ion-content>
