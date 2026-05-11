@@ -1,11 +1,12 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { SettingsStore } from '../../core/state/settings.store';
 import { LibraryBridgeService } from '../../core/bridge/library-bridge.service';
 
 @Component({
   selector: 'app-settings',
   standalone: true,
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './settings.component.html',
   styleUrl:    './settings.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

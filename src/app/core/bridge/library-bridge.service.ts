@@ -2,11 +2,9 @@ import { Injectable, NgZone, OnDestroy } from '@angular/core';
 import { Capacitor } from '@capacitor/core';
 import { LibraryStore } from '../state/library.store';
 import type { Track } from '../models/track.model';
+import type { Album } from '../models/album.model';
+import type { Artist } from '../models/artist.model';
 
-/**
- * Wraps the native LibraryPlugin Capacitor bridge.
- * Handles MediaStore scanning, permission requests, incremental index.
- */
 @Injectable({ providedIn: 'root' })
 export class LibraryBridgeService implements OnDestroy {
   private plugin: Record<string, (...args: unknown[]) => Promise<unknown>> | null = null;
@@ -44,8 +42,8 @@ export class LibraryBridgeService implements OnDestroy {
             }),
         ),
       );
-    } catch {
-      console.warn('[LibraryBridge] Native plugin not available');
+    } catch (err) {
+      console.warn('[LibraryBridge] Native plugin not available:', err);
     }
   }
 
@@ -71,44 +69,73 @@ export class LibraryBridgeService implements OnDestroy {
     this.libraryStore.setScanStatus('idle');
   }
 
-  async getTracks(offset = 0, limit = 500): Promise<readonly Track[]> {
+  async getTracks(offset = 0, limit = 2000): Promise<readonly Track[]> {
     const result = await this.call('getTracks', { offset, limit });
-    return ((result as Record<string, unknown>)?.['tracks'] as Track[]) ?? [];
+    const raw = ((result as Record<string, unknown>)?.['tracks'] as unknown[]) ?? [];
+    return raw as Track[];
   }
 
-  async getAlbums(): Promise<unknown[]> {
+  async getAlbums(): Promise<readonly Album[]> {
     const result = await this.call('getAlbums');
-    return ((result as Record<string, unknown>)?.['albums'] as unknown[]) ?? [];
+    const raw = ((result as Record<string, unknown>)?.['albums'] as unknown[]) ?? [];
+    return raw as Album[];
   }
 
-  async getArtists(): Promise<unknown[]> {
+  async getArtists(): Promise<readonly Artist[]> {
     const result = await this.call('getArtists');
-    return ((result as Record<string, unknown>)?.['artists'] as unknown[]) ?? [];
+    const raw = ((result as Record<string, unknown>)?.['artists'] as unknown[]) ?? [];
+    return raw as Artist[];
   }
 
-  async getArtwork(trackId: number): Promise<string | null> {
-    const result = await this.call('getArtwork', { trackId });
-    return ((result as Record<string, unknown>)?.['dataUri'] as string) ?? null;
+  /** Load all library data from MediaStore into Angular signals. */
+  async loadAllIntoStore(): Promise<void> {
+    if (!Capacitor.isNativePlatform()) return;
+
+    try {
+      this.libraryStore.setLoading(true);
+
+      const [tracks, albums, artists] = await Promise.all([
+        this.getTracks(),
+        this.getAlbums(),
+        this.getArtists(),
+      ]);
+
+      this.zone.run(() => {
+        this.libraryStore.setTracks(tracks);
+        this.libraryStore.setAlbums(albums);
+        this.libraryStore.setArtists(artists);
+        this.libraryStore.setLoading(false);
+      });
+
+      console.info(
+        `[LibraryBridge] Loaded: ${tracks.length} tracks, ${albums.length} albums, ${artists.length} artists`,
+      );
+    } catch (err) {
+      console.error('[LibraryBridge] loadAllIntoStore failed:', err);
+      this.zone.run(() => this.libraryStore.setLoading(false));
+    }
+  }
+
+  /** Request permissions → scan → load all into store. Single call for full refresh. */
+  async scanAndLoad(): Promise<void> {
+    const granted = await this.requestPermissions();
+    if (!granted) {
+      console.warn('[LibraryBridge] Permission denied');
+      return;
+    }
+
+    // Load whatever is already indexed (fast path)
+    await this.loadAllIntoStore();
+
+    // Then trigger a fresh scan (events will reload store when done)
+    await this.startScan(true);
   }
 
   private onScanComplete(data: Record<string, unknown>): void {
     this.libraryStore.setScanStatus('done');
     this.libraryStore.setLastSyncAt(Date.now());
-    const count = Number(data['trackCount'] ?? 0);
-    console.info(`[LibraryBridge] Scan complete. ${count} tracks indexed.`);
-    // Auto-load first page of tracks into store
+    console.info(`[LibraryBridge] Scan complete. Tracks: ${data['trackCount'] ?? 0}`);
     void this.loadAllIntoStore();
-  }
-
-  async loadAllIntoStore(): Promise<void> {
-    const tracks  = await this.getTracks(0, 2000);
-    const albums  = await this.getAlbums();
-    const artists = await this.getArtists();
-    this.zone.run(() => {
-      this.libraryStore.setTracks(tracks as never);
-      this.libraryStore.setAlbums(albums as never);
-      this.libraryStore.setArtists(artists as never);
-    });
   }
 
   private async call(

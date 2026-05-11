@@ -53,9 +53,13 @@ export class LibraryComponent implements OnInit {
   ];
 
   async ngOnInit(): Promise<void> {
-    if (this.store.isEmpty() && !this.store.isScanning()) {
+    if (!this.store.isScanning()) {
       const granted = await this.libraryBridge.checkPermissions();
-      if (granted) await this.libraryBridge.startScan(true);
+      if (granted) {
+        // Load whatever is already indexed first (fast path), then scan for updates
+        await this.libraryBridge.loadAllIntoStore();
+        await this.libraryBridge.startScan(true);
+      }
     }
   }
 
@@ -69,7 +73,6 @@ export class LibraryComponent implements OnInit {
   onAlbumSelect(_album: Album): void { /* navigate */ }
 
   async handleScan(): Promise<void> {
-    const granted = await this.libraryBridge.requestPermissions();
-    if (granted) await this.libraryBridge.startScan(false);
+    await this.libraryBridge.scanAndLoad();
   }
 }

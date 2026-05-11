@@ -72,7 +72,7 @@ class LibraryPlugin : Plugin() {
     }
 
     @PermissionCallback
-    private fun permissionCallback(call: PluginCall) {
+    fun permissionCallback(call: PluginCall) {
         val granted = hasPermission(audioPermission())
         call.resolve(JSObject().apply { put("granted", granted) })
     }
