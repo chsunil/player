@@ -68,6 +68,10 @@ export class LibraryBridgeService implements OnDestroy {
     return (result as Record<string, unknown>)?.['granted'] === true;
   }
 
+  async openSettings(): Promise<void> {
+    await this.call('openSettings');
+  }
+
   async startScan(incremental = true): Promise<void> {
     this.zone.run(() => this.libraryStore.setScanStatus('scanning'));
     await this.call('startScan', { incremental });

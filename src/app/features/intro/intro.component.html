@@ -111,9 +111,15 @@
         </div>
 
         @if (permissionDenied()) {
-          <p class="error-text">
-            Permission denied. Open device Settings → Apps → Melodia → Permissions to allow access.
-          </p>
+          <div class="denied-box">
+            <p class="denied-text">Permission denied.</p>
+            <button class="btn-open-settings" (click)="openDeviceSettings()">
+              Open App Settings
+            </button>
+            <p class="denied-hint">
+              Enable "Music and audio" permission, then come back and tap Allow Access.
+            </p>
+          </div>
         }
 
         <button class="btn-primary" (click)="allowAccess()">Allow Access</button>
