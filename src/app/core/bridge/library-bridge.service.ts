@@ -9,6 +9,8 @@ import type { Artist } from '../models/artist.model';
 export class LibraryBridgeService implements OnDestroy {
   private plugin: Record<string, (...args: unknown[]) => Promise<unknown>> | null = null;
   private readonly listeners: Array<{ remove: () => Promise<void> }> = [];
+  /** Cached init promise — prevents double-init and lets callers await it. */
+  private initPromise: Promise<void> | null = null;
 
   constructor(
     private readonly libraryStore: LibraryStore,
@@ -16,6 +18,12 @@ export class LibraryBridgeService implements OnDestroy {
   ) {}
 
   async initialize(): Promise<void> {
+    if (this.initPromise) return this.initPromise;
+    this.initPromise = this.doInitialize();
+    return this.initPromise;
+  }
+
+  private async doInitialize(): Promise<void> {
     if (!Capacitor.isNativePlatform()) return;
 
     try {
@@ -61,13 +69,13 @@ export class LibraryBridgeService implements OnDestroy {
   }
 
   async startScan(incremental = true): Promise<void> {
-    this.libraryStore.setScanStatus('scanning');
+    this.zone.run(() => this.libraryStore.setScanStatus('scanning'));
     await this.call('startScan', { incremental });
   }
 
   async stopScan(): Promise<void> {
     await this.call('stopScan');
-    this.libraryStore.setScanStatus('idle');
+    this.zone.run(() => this.libraryStore.setScanStatus('idle'));
   }
 
   async getTracks(offset = 0, limit = 2000): Promise<readonly Track[]> {
@@ -126,7 +134,7 @@ export class LibraryBridgeService implements OnDestroy {
     }
 
     // Show scanning state immediately so animation appears before data loads
-    this.libraryStore.setScanStatus('scanning');
+    this.zone.run(() => this.libraryStore.setScanStatus('scanning'));
 
     // Load whatever is already indexed (fast path)
     await this.loadAllIntoStore();
@@ -146,6 +154,9 @@ export class LibraryBridgeService implements OnDestroy {
     method: string,
     args: Record<string, unknown> = {},
   ): Promise<unknown> {
+    // Ensure init completed before every call — guards against the race where
+    // child components invoke the bridge before app.ts ngOnInit awaits initialize().
+    if (!this.plugin) await this.initialize();
     if (!this.plugin) return null;
     try {
       return await (this.plugin[method] as Function)(args);
