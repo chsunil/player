@@ -37,8 +37,9 @@ export class LibraryBridgeService implements OnDestroy {
           'scanError',
           (data: Record<string, unknown>) =>
             this.zone.run(() => {
-              console.error('[LibraryBridge] scan error:', data['message']);
-              this.libraryStore.setScanStatus('error');
+              const msg = String(data['message'] ?? 'Scan failed');
+              console.error('[LibraryBridge] scan error:', msg);
+              this.libraryStore.setScanStatus('error', msg);
             }),
         ),
       );
@@ -124,11 +125,14 @@ export class LibraryBridgeService implements OnDestroy {
       return;
     }
 
+    // Show scanning state immediately so animation appears before data loads
+    this.libraryStore.setScanStatus('scanning');
+
     // Load whatever is already indexed (fast path)
     await this.loadAllIntoStore();
 
     // Then trigger a fresh scan (events will reload store when done)
-    await this.startScan(true);
+    await this.call('startScan', { incremental: true });
   }
 
   private onScanComplete(data: Record<string, unknown>): void {

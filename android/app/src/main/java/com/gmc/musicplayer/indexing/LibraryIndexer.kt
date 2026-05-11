@@ -123,7 +123,7 @@ class LibraryIndexer(
                     val track = c.toTrackRow()
                     // TODO: upsert track into SQLite (Phase 2 — DB layer)
                     indexed++
-                    onProgress(total, indexed, total, track.data)
+                    onProgress(indexed, indexed, total, track.data)
                 }
 
                 onComplete(indexed)

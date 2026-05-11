@@ -26,8 +26,9 @@ export class LibraryStore {
   private readonly _sortField    = signal<LibrarySortField>('title');
   private readonly _sortDir      = signal<SortDirection>('asc');
   private readonly _activeView   = signal<LibraryView>('albums');
-  private readonly _isLoading    = signal<boolean>(false);
-  private readonly _lastSyncAt   = signal<number | null>(null);
+  private readonly _isLoading       = signal<boolean>(false);
+  private readonly _lastSyncAt      = signal<number | null>(null);
+  private readonly _scanErrorMessage = signal<string | null>(null);
 
   readonly tracks       = this._tracks.asReadonly();
   readonly albums       = this._albums.asReadonly();
@@ -37,8 +38,9 @@ export class LibraryStore {
   readonly sortField    = this._sortField.asReadonly();
   readonly sortDir      = this._sortDir.asReadonly();
   readonly activeView   = this._activeView.asReadonly();
-  readonly isLoading    = this._isLoading.asReadonly();
-  readonly lastSyncAt   = this._lastSyncAt.asReadonly();
+  readonly isLoading         = this._isLoading.asReadonly();
+  readonly lastSyncAt        = this._lastSyncAt.asReadonly();
+  readonly scanErrorMessage  = this._scanErrorMessage.asReadonly();
 
   readonly trackCount  = computed(() => this._tracks().length);
   readonly albumCount  = computed(() => this._albums().length);
@@ -62,8 +64,9 @@ export class LibraryStore {
     this._tracks.update(existing => [...existing, ...newTracks]);
   }
 
-  setScanStatus(status: ScanStatus): void {
+  setScanStatus(status: ScanStatus, errorMessage?: string): void {
     this._scanStatus.set(status);
+    this._scanErrorMessage.set(errorMessage ?? null);
   }
 
   setScanProgress(progress: ScanProgress): void {

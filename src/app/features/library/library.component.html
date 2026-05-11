@@ -57,6 +57,26 @@
       </div>
     }
 
+    @if (store.scanStatus() === 'error') {
+      <div class="scan-banner scan-banner--error">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="12" r="10" stroke="#ff5555" stroke-width="2"/>
+          <path d="M12 8v4M12 16h.01" stroke="#ff5555" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <span>{{ store.scanErrorMessage() ?? 'Scan failed' }}</span>
+      </div>
+    }
+
+    @if (store.scanStatus() === 'done' && store.trackCount() === 0) {
+      <div class="scan-banner scan-banner--warn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="12" r="10" stroke="#ffaa33" stroke-width="2"/>
+          <path d="M12 8v4M12 16h.01" stroke="#ffaa33" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <span>No music files found on device</span>
+      </div>
+    }
+
     @if (activeView() === 'albums') {
       @if (filteredAlbums().length > 0) {
         <div class="album-grid">
