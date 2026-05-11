@@ -67,6 +67,7 @@
 
   &--accent  { background: #7c6aff18; }
   &--music   { background: #7c6aff18; }
+  &--perm    { background: #7c6aff18; }
   &--success { background: #7c6aff18; }
   &--error   { background: #ff555518; }
 }
@@ -104,6 +105,69 @@
   color: #ff5555;
   margin: 0;
   max-width: 280px;
+}
+
+/* ── Feature list (step 1) ── */
+.feature-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  max-width: 300px;
+  text-align: left;
+}
+
+.feature-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.feature-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #7c6aff;
+  flex-shrink: 0;
+}
+
+.feature-text {
+  font-size: 15px;
+  color: #9090a8;
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* ── Permission card (step 2) ── */
+.perm-card {
+  width: 100%;
+  max-width: 320px;
+  background: #1a1a26;
+  border: 1px solid #2a2a3a;
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.perm-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border-bottom: 1px solid #2a2a3a;
+  text-align: left;
+
+  &--no-border { border-bottom: none; }
+}
+
+.perm-icon { flex-shrink: 0; }
+
+.perm-text {
+  font-size: 14px;
+  color: #9090a8;
+  margin: 0;
+  line-height: 1.4;
+
+  &--muted { color: #606070; }
 }
 
 /* ── Buttons ── */

@@ -7,7 +7,7 @@ import { LibraryBridgeService } from '../../core/bridge/library-bridge.service';
 import { LibraryStore } from '../../core/state/library.store';
 import { DecimalPipe } from '@angular/common';
 
-type IntroStep = 0 | 1 | 2;
+type IntroStep = 0 | 1 | 2 | 3;
 
 @Component({
   selector: 'app-intro',
@@ -22,8 +22,8 @@ export class IntroComponent implements OnInit {
   private readonly libraryBridge = inject(LibraryBridgeService);
   protected readonly store       = inject(LibraryStore);
 
-  protected readonly step     = signal<IntroStep>(0);
-  protected readonly scanning = signal(false);
+  protected readonly step             = signal<IntroStep>(0);
+  protected readonly scanning         = signal(false);
   protected readonly permissionDenied = signal(false);
 
   protected readonly scanPct = computed(() => {
@@ -31,13 +31,16 @@ export class IntroComponent implements OnInit {
     return p.total > 0 ? Math.round((p.indexed / p.total) * 100) : 0;
   });
 
+  /** Maps step → active dot index (steps 2 & 3 share dot 2) */
+  protected readonly activeDot = computed(() => Math.min(this.step(), 3));
+
   constructor() {
-    // Advance to step 2 when scan finishes or errors
+    // Advance to step 3 (Ready) when scan finishes or errors
     effect(() => {
       const status = this.store.scanStatus();
       if (this.scanning() && (status === 'done' || status === 'error')) {
         this.scanning.set(false);
-        this.step.set(2);
+        this.step.set(3);
       }
     });
   }
@@ -52,7 +55,7 @@ export class IntroComponent implements OnInit {
     this.step.set((this.step() + 1) as IntroStep);
   }
 
-  async scanMusic(): Promise<void> {
+  async allowAccess(): Promise<void> {
     this.permissionDenied.set(false);
     const granted = await this.libraryBridge.requestPermissions();
     if (!granted) {
@@ -65,7 +68,7 @@ export class IntroComponent implements OnInit {
   }
 
   skip(): void {
-    this.step.set(2);
+    this.step.set(3);
   }
 
   finish(): void {
