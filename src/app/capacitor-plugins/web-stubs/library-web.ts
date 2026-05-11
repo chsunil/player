@@ -10,4 +10,5 @@ export class LibraryWeb extends WebPlugin implements LibraryPluginDefinition {
   async getAlbums(): Promise<{ albums: unknown[] }>  { return { albums: [] }; }
   async getArtists(): Promise<{ artists: unknown[] }>{ return { artists: [] }; }
   async getArtwork(): Promise<{ dataUri: string | null }> { return { dataUri: null }; }
+  async openSettings(): Promise<void> { console.debug('[LibraryWeb] openSettings (no-op)'); }
 }

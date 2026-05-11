@@ -9,6 +9,7 @@ export interface LibraryPluginDefinition {
   getAlbums(): Promise<{ albums: unknown[] }>;
   getArtists(): Promise<{ artists: unknown[] }>;
   getArtwork(options: { trackId: number }): Promise<{ dataUri: string | null }>;
+  openSettings(): Promise<void>;
   addListener(
     event: 'scanProgress' | 'scanComplete' | 'scanError',
     handler: (data: Record<string, unknown>) => void,

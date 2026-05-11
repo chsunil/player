@@ -67,6 +67,10 @@ export class IntroComponent implements OnInit {
     await this.libraryBridge.startScan(false);
   }
 
+  async openDeviceSettings(): Promise<void> {
+    await this.libraryBridge.openSettings();
+  }
+
   skip(): void {
     this.step.set(3);
   }

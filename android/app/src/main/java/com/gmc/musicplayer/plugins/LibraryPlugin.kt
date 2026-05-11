@@ -1,7 +1,10 @@
 package com.gmc.musicplayer.plugins
 
 import android.Manifest
+import android.content.Intent
+import android.net.Uri
 import android.os.Build
+import android.provider.Settings
 import com.getcapacitor.JSArray
 import com.getcapacitor.JSObject
 import com.getcapacitor.Plugin
@@ -31,13 +34,11 @@ import kotlinx.coroutines.launch
 @CapacitorPlugin(
     name = "LibraryPlugin",
     permissions = [
-        Permission(
-            alias = "readAudio",
-            strings = [
-                Manifest.permission.READ_MEDIA_AUDIO,  // API 33+
-                Manifest.permission.READ_EXTERNAL_STORAGE,
-            ],
-        ),
+        // Two separate aliases so Capacitor only requests one per SDK version.
+        // Combining both in one alias causes the whole request to fail on API 33+
+        // because READ_EXTERNAL_STORAGE is non-requestable there.
+        Permission(alias = "readMediaAudio", strings = [Manifest.permission.READ_MEDIA_AUDIO]),
+        Permission(alias = "readStorage",    strings = [Manifest.permission.READ_EXTERNAL_STORAGE]),
     ],
 )
 class LibraryPlugin : Plugin() {
@@ -68,7 +69,9 @@ class LibraryPlugin : Plugin() {
 
     @PluginMethod
     override fun requestPermissions(call: PluginCall) {
-        requestPermissionForAlias("readAudio", call, "permissionCallback")
+        val alias = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+            "readMediaAudio" else "readStorage"
+        requestPermissionForAlias(alias, call, "permissionCallback")
     }
 
     @PermissionCallback
@@ -145,6 +148,16 @@ class LibraryPlugin : Plugin() {
             val dataUri = indexer.getArtworkDataUri(trackId)
             call.resolve(JSObject().apply { put("dataUri", dataUri) })
         }
+    }
+
+    @PluginMethod
+    fun openSettings(call: PluginCall) {
+        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+            data = Uri.fromParts("package", context.packageName, null)
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        }
+        context.startActivity(intent)
+        call.resolve()
     }
 
     private fun audioPermission(): String =
