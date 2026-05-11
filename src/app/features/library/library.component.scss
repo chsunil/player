@@ -41,6 +41,18 @@
   padding: 8px; min-width: 44px; min-height: 44px;
   display: flex; align-items: center; justify-content: center; border-radius: 50%;
   &:active { opacity: 0.6; }
+  &--scanning { opacity: 0.7; cursor: default; }
+  &:disabled { pointer-events: none; }
+}
+
+.spin {
+  animation: spinCw 1s linear infinite;
+  transform-origin: center;
+}
+
+@keyframes spinCw {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
 }
 
 .search-input {
@@ -62,17 +74,85 @@
   &:active { opacity: 0.75; }
 }
 
-.scan-bar-wrap { padding: 10px 16px 4px; }
-
-.scan-bar {
-  height: 3px; background: #2a2a2a; border-radius: 2px; overflow: hidden; margin-bottom: 6px;
+/* ── Scan overlay ─────────────────────────────────────── */
+.scan-overlay {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 24px 32px;
+  gap: 0;
 }
 
-.scan-bar-fill {
-  height: 100%; background: #7c6aff; border-radius: 2px; transition: width 200ms ease;
+/* Waveform bars */
+.scan-wave {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  height: 40px;
+  margin-bottom: 20px;
 }
 
-.scan-label { font-size: 12px; color: #9090a8; margin: 0; }
+.scan-wave-bar {
+  width: 4px;
+  border-radius: 2px;
+  background: #7c6aff;
+  animation: waveBar 1s ease-in-out infinite alternate;
+  min-height: 6px;
+}
+
+@keyframes waveBar {
+  0%   { height: 6px;  opacity: 0.4; }
+  100% { height: 36px; opacity: 1;   }
+}
+
+.scan-heading {
+  font-size: 17px;
+  font-weight: 700;
+  color: #eeeef2;
+  margin: 0 0 6px;
+}
+
+.scan-count {
+  font-size: 28px;
+  font-weight: 800;
+  color: #7c6aff;
+  margin: 0 0 8px;
+  letter-spacing: -0.5px;
+}
+
+.scan-path {
+  font-size: 11px;
+  color: #606070;
+  margin: 0 0 16px;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.scan-track {
+  width: 100%;
+  max-width: 280px;
+  height: 3px;
+  background: #2a2a2a;
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+
+.scan-track-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #7c6aff, #a78bfa);
+  border-radius: 2px;
+  transition: width 300ms ease;
+}
+
+.scan-pct {
+  font-size: 12px;
+  color: #9090a8;
+  margin: 0;
+}
 
 .album-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; padding: 16px; }
 

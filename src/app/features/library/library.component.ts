@@ -1,7 +1,8 @@
 import {
   ChangeDetectionStrategy, Component, computed,
-  inject, OnInit, signal,
+  inject, OnInit, signal, Pipe, PipeTransform,
 } from '@angular/core';
+import { DecimalPipe } from '@angular/common';
 import { LibraryStore, type LibraryView } from '../../core/state/library.store';
 import { LibraryBridgeService } from '../../core/bridge/library-bridge.service';
 import { AlbumCardComponent } from '../../shared/components/album-card/album-card.component';
@@ -9,10 +10,20 @@ import { TrackItemComponent } from '../../shared/components/track-item/track-ite
 import type { Track } from '../../core/models/track.model';
 import type { Album } from '../../core/models/album.model';
 
+/** Shows only the filename portion of a full file path */
+@Pipe({ name: 'scanPath', standalone: true, pure: true })
+export class ScanPathPipe implements PipeTransform {
+  transform(path: string): string {
+    if (!path) return '';
+    const parts = path.replace(/\\/g, '/').split('/');
+    return parts[parts.length - 1] ?? path;
+  }
+}
+
 @Component({
   selector: 'app-library',
   standalone: true,
-  imports: [AlbumCardComponent, TrackItemComponent],
+  imports: [AlbumCardComponent, TrackItemComponent, ScanPathPipe, DecimalPipe],
   templateUrl: './library.component.html',
   styleUrl:    './library.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -23,6 +34,8 @@ export class LibraryComponent implements OnInit {
 
   protected readonly activeView  = signal<LibraryView>('albums');
   protected readonly searchQuery = signal('');
+  /** 12 bars for the waveform animation */
+  protected readonly waveItems   = Array.from({ length: 12 });
 
   protected readonly filteredAlbums = computed(() => {
     const q = this.searchQuery().toLowerCase();
