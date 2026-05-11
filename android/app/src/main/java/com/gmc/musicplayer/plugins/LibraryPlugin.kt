@@ -69,6 +69,12 @@ class LibraryPlugin : Plugin() {
 
     @PluginMethod
     override fun requestPermissions(call: PluginCall) {
+        val permission = audioPermission()
+        // Fast path: already granted (e.g. user just enabled it in device Settings)
+        if (hasPermission(permission)) {
+            call.resolve(JSObject().apply { put("granted", true) })
+            return
+        }
         val alias = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
             "readMediaAudio" else "readStorage"
         requestPermissionForAlias(alias, call, "permissionCallback")
