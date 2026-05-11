@@ -33,6 +33,24 @@
 .row-label { font-size: 15px; color: #eeeef2; }
 .row-arrow { font-size: 20px; color: #606070; }
 
+.row-spinner {
+  animation: spin 1s linear infinite;
+  flex-shrink: 0;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.setting-row:disabled { opacity: 0.6; cursor: default; }
+
+.scan-status {
+  padding: 8px 16px;
+  font-size: 13px;
+  border-top: 1px solid #ffffff0f;
+
+  &--progress { color: #9090a8; }
+  &--error    { color: #ff5555; }
+  &--done     { color: #44cc88; }
+}
+
 .toggle {
   position: relative; display: inline-flex; align-items: center;
   input { display: none; }

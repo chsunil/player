@@ -1,18 +1,21 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { DecimalPipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { SettingsStore } from '../../core/state/settings.store';
 import { LibraryBridgeService } from '../../core/bridge/library-bridge.service';
+import { LibraryStore } from '../../core/state/library.store';
 
 @Component({
   selector: 'app-settings',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, DecimalPipe],
   templateUrl: './settings.component.html',
   styleUrl:    './settings.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SettingsComponent {
   protected readonly settings     = inject(SettingsStore);
+  protected readonly libraryStore = inject(LibraryStore);
   private  readonly libraryBridge = inject(LibraryBridgeService);
 
   async scanLibrary(): Promise<void> {

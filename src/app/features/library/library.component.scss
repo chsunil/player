@@ -154,6 +154,17 @@
   margin: 0;
 }
 
+.scan-banner {
+  display: flex; align-items: center; gap: 10px;
+  margin: 12px 16px 0; padding: 12px 14px;
+  border-radius: 10px; font-size: 14px; color: #eeeef2;
+
+  &--error { background: #2a1a1a; border: 1px solid #ff555533; }
+  &--warn  { background: #2a1f0f; border: 1px solid #ffaa3333; }
+
+  svg { flex-shrink: 0; }
+}
+
 .album-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; padding: 16px; }
 
 .artist-row {
