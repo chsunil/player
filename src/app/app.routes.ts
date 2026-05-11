@@ -1,13 +1,19 @@
 import { Routes } from '@angular/router';
+import { onboardingGuard } from './core/guards/onboarding.guard';
 
 export const appRoutes: Routes = [
   {
     path: '',
-    redirectTo: '/tabs/home',
+    redirectTo: '/intro',
     pathMatch: 'full',
   },
   {
+    path: 'intro',
+    loadComponent: () => import('./features/intro/intro.component').then(m => m.IntroComponent),
+  },
+  {
     path: 'tabs',
+    canActivate: [onboardingGuard],
     loadComponent: () => import('./features/tabs/tabs.component').then(m => m.TabsComponent),
     loadChildren: () => import('./features/tabs/tabs.routes').then(m => m.tabsRoutes),
   },
