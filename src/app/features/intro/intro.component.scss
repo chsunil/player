@@ -1,0 +1,253 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: #0d0d12;
+}
+
+.intro {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: calc(env(safe-area-inset-top) + 48px) 32px calc(env(safe-area-inset-bottom) + 40px);
+  min-height: 0;
+}
+
+/* ── Dots ── */
+.dots {
+  display: flex;
+  gap: 8px;
+  align-self: center;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #333344;
+  transition: background 250ms, width 250ms;
+
+  &--active {
+    width: 24px;
+    border-radius: 4px;
+    background: #7c6aff;
+  }
+}
+
+/* ── Slide ── */
+.slide {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 16px;
+  padding: 24px 0 8px;
+  width: 100%;
+  animation: fadeUp 320ms cubic-bezier(0.0, 0.0, 0.2, 1) both;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Icon wraps ── */
+.icon-wrap {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8px;
+
+  &--accent  { background: #7c6aff18; }
+  &--music   { background: #7c6aff18; }
+  &--perm    { background: #7c6aff18; }
+  &--success { background: #7c6aff18; }
+  &--error   { background: #ff555518; }
+}
+
+/* ── Typography ── */
+.title {
+  font-size: 28px;
+  font-weight: 800;
+  color: #eeeef2;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.subtitle {
+  font-size: 17px;
+  color: #7c6aff;
+  margin: 0;
+  font-weight: 500;
+}
+
+.body-text {
+  font-size: 15px;
+  color: #9090a8;
+  margin: 0;
+  line-height: 1.6;
+  max-width: 300px;
+
+  strong { color: #eeeef2; font-weight: 600; }
+
+  &.muted { font-size: 13px; color: #606070; }
+}
+
+.error-text {
+  font-size: 13px;
+  color: #ff5555;
+  margin: 0;
+  max-width: 280px;
+}
+
+/* ── Feature list (step 1) ── */
+.feature-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  max-width: 300px;
+  text-align: left;
+}
+
+.feature-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.feature-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #7c6aff;
+  flex-shrink: 0;
+}
+
+.feature-text {
+  font-size: 15px;
+  color: #9090a8;
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* ── Permission card (step 2) ── */
+.perm-card {
+  width: 100%;
+  max-width: 320px;
+  background: #1a1a26;
+  border: 1px solid #2a2a3a;
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.perm-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border-bottom: 1px solid #2a2a3a;
+  text-align: left;
+
+  &--no-border { border-bottom: none; }
+}
+
+.perm-icon { flex-shrink: 0; }
+
+.perm-text {
+  font-size: 14px;
+  color: #9090a8;
+  margin: 0;
+  line-height: 1.4;
+
+  &--muted { color: #606070; }
+}
+
+/* ── Buttons ── */
+.btn-primary {
+  width: 100%;
+  max-width: 320px;
+  padding: 16px 24px;
+  border-radius: 14px;
+  background: #7c6aff;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: opacity 150ms, transform 100ms;
+  margin-top: 8px;
+
+  &:active { opacity: 0.85; transform: scale(0.98); }
+}
+
+.btn-ghost {
+  background: none;
+  border: none;
+  color: #606070;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 8px 16px;
+  border-radius: 8px;
+  transition: color 150ms;
+
+  &:active { color: #9090a8; }
+}
+
+/* ── Scan animation (waveform) ── */
+.scan-anim {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  height: 64px;
+  margin-bottom: 8px;
+}
+
+.bar {
+  width: 5px;
+  border-radius: 3px;
+  background: #7c6aff;
+  animation: wave 1s ease-in-out infinite alternate;
+  height: 12px;
+}
+
+@keyframes wave {
+  0%   { height: 10px; opacity: 0.4; }
+  100% { height: 52px; opacity: 1;   }
+}
+
+/* ── Progress ── */
+.scan-count {
+  font-size: 24px;
+  font-weight: 700;
+  color: #eeeef2;
+  margin: 0;
+}
+
+.scan-pct {
+  font-size: 13px;
+  color: #9090a8;
+  margin: 0;
+}
+
+.progress-track {
+  width: 240px;
+  height: 4px;
+  background: #2a2a3a;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #7c6aff;
+  border-radius: 2px;
+  transition: width 300ms ease-out;
+}
