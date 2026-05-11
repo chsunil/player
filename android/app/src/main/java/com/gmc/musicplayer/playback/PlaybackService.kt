@@ -83,7 +83,7 @@ class PlaybackService : Service() {
         audioFocusHandler   = AudioFocusHandler(this, player)
         queueManager        = QueueManager(player)
         mediaSessionHandler = MediaSessionHandler(this, player)
-        notificationHandler = PlaybackNotificationHandler(this, player, mediaSessionHandler.session)
+        notificationHandler = PlaybackNotificationHandler(this, player)
     }
 
     override fun onBind(intent: Intent?): IBinder = binder

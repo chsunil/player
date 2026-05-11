@@ -1,26 +1,40 @@
-.home {
-  min-height: 100%;
-  background: oklch(8% 0.018 280);
+:host {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: #121212;
 }
 
-.status-spacer {
-  height: calc(env(safe-area-inset-top) + 8px);
+.page {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-height: 0;
 }
 
-/* ── Header ── */
-.home-header {
-  padding: 8px 16px 16px;
+.page-header {
+  flex-shrink: 0;
+  padding: calc(env(safe-area-inset-top) + 12px) 16px 12px;
+  background: #121212;
+}
+
+.page-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: contain;
 }
 
 .greeting {
   font-size: 24px;
   font-weight: 700;
-  color: oklch(93% 0.01 280);
+  color: #eeeef2;
   margin: 0 0 16px;
-  line-height: 1.2;
 }
 
-/* ── Filter chips ── */
 .filter-chips {
   display: flex;
   gap: 8px;
@@ -34,23 +48,14 @@
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  transition: background 120ms ease, color 120ms ease;
-  background: oklch(21% 0.018 280);
-  color: oklch(93% 0.01 280);
+  background: #333333;
+  color: #eeeef2;
   white-space: nowrap;
-
+  &--active { background: #eeeef2; color: #121212; }
   &:active { opacity: 0.75; }
-
-  &--active {
-    background: oklch(93% 0.01 280);
-    color: oklch(8% 0.018 280);
-  }
 }
 
-/* ── Recently played shortcuts ── */
-.shortcuts-section {
-  padding: 0 16px 24px;
-}
+.shortcuts-section { padding: 0 16px 24px; }
 
 .shortcuts-grid {
   display: grid;
@@ -61,29 +66,20 @@
 .shortcut-skeleton {
   height: 56px;
   border-radius: 6px;
-  background: oklch(14% 0.018 280);
+  background: #242424;
   animation: pulse 1.6s ease-in-out infinite;
 }
 
-/* ── Carousel sections ── */
-.carousel-section {
-  margin-bottom: 28px;
-}
+.carousel-section { margin-bottom: 28px; }
 
 .carousel {
   display: flex;
   gap: 12px;
   overflow-x: auto;
   padding: 0 16px 4px;
-  scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
-
   &::-webkit-scrollbar { display: none; }
-
-  > * {
-    scroll-snap-align: start;
-    flex-shrink: 0;
-  }
+  > * { flex-shrink: 0; }
 }
 
 .album-skeleton {
@@ -91,69 +87,17 @@
   height: 190px;
   border-radius: 8px;
   flex-shrink: 0;
-  background: oklch(14% 0.018 280);
+  background: #242424;
   animation: pulse 1.6s ease-in-out infinite;
 }
 
-/* ── Artist card ── */
-.artist-card {
-  width: 130px;
-  flex-shrink: 0;
-  text-align: center;
-  cursor: pointer;
+.empty-state { text-align: center; padding: 60px 20px; }
+.empty-icon { font-size: 48px; margin: 0 0 16px; }
+.empty-title { font-size: 18px; font-weight: 700; color: #eeeef2; margin: 0 0 8px; }
+.empty-sub { font-size: 14px; color: #606070; margin: 0; }
+.bottom-spacer { height: 140px; }
 
-  &:active .artist-artwork { opacity: 0.7; }
-}
-
-.artist-artwork {
-  width: 130px;
-  height: 130px;
-  border-radius: 50%;
-  overflow: hidden;
-  background: oklch(17% 0.018 280);
-  margin-bottom: 8px;
-  transition: opacity 100ms ease;
-
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-  }
-}
-
-.artist-name {
-  margin: 0;
-  font-size: 13px;
-  font-weight: 600;
-  color: oklch(93% 0.01 280);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.artist-sub {
-  margin: 2px 0 0;
-  font-size: 12px;
-  color: oklch(42% 0.01 280);
-}
-
-.artist-skeleton {
-  width: 130px;
-  height: 156px;
-  flex-shrink: 0;
-  background: oklch(14% 0.018 280);
-  border-radius: 8px;
-  animation: pulse 1.6s ease-in-out infinite;
-}
-
-/* ── Spacer ── */
-.bottom-spacer {
-  height: 160px;
-}
-
-/* ── Skeleton animation ── */
 @keyframes pulse {
   0%, 100% { opacity: 1; }
-  50%       { opacity: 0.45; }
+  50%       { opacity: 0.4; }
 }

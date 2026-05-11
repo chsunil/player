@@ -1,47 +1,27 @@
-ion-toolbar { --background: oklch(8% 0.018 280); }
+:host { display: flex; flex-direction: column; overflow: hidden; background: #121212; }
+
+.page { flex: 1; display: flex; flex-direction: column; overflow: hidden; min-height: 0; }
+
+.page-header {
+  flex-shrink: 0;
+  padding: calc(env(safe-area-inset-top) + 12px) 20px 8px;
+}
+
+.page-scroll { flex: 1; min-height: 0; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+
+.page-title { font-size: 24px; font-weight: 700; color: #eeeef2; margin: 0; }
 
 .connect-state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 60px 32px;
-  text-align: center;
-  min-height: 60vh;
+  display: flex; flex-direction: column; align-items: center;
+  text-align: center; padding: 80px 32px 40px;
 }
 
-.cloud-icon {
-  font-size: 72px;
-  color: oklch(42% 0.01 280);
-  margin-bottom: 20px;
-}
-
-.connect-title {
-  font-size: 20px;
-  font-weight: 700;
-  color: oklch(93% 0.01 280);
-  margin: 0 0 8px;
-}
-
-.connect-subtitle {
-  font-size: 14px;
-  color: oklch(42% 0.01 280);
-  margin: 0 0 32px;
-  line-height: 1.5;
-}
+.cloud-icon { font-size: 64px; margin: 0 0 20px; }
+.connect-title { font-size: 22px; font-weight: 700; color: #eeeef2; margin: 0 0 8px; }
+.connect-sub { font-size: 14px; color: #606070; margin: 0 0 32px; }
 
 .connect-btn {
-  --background: oklch(65% 0.22 280);
-  --border-radius: 12px;
-  width: 100%;
-}
-
-.browser-state {
-  padding: 16px 20px;
-}
-
-.path-label {
-  font-size: 13px;
-  color: oklch(42% 0.01 280);
-  font-family: monospace;
+  background: #7c6aff; color: #fff; border: none; border-radius: 30px;
+  padding: 14px 40px; font-size: 16px; font-weight: 700; cursor: pointer;
+  &:active { opacity: 0.85; }
 }

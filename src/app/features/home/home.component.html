@@ -1,118 +1,72 @@
-<ion-content [fullscreen]="true" [scrollY]="true">
-  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
-    <ion-refresher-content></ion-refresher-content>
-  </ion-refresher>
+<div class="page">
 
-  <div class="home">
+  <!-- Header -->
+  <div class="page-header">
+    <h1 class="greeting">{{ greeting() }}</h1>
+    <div class="filter-chips" role="group">
+      @for (chip of [
+        { id: 'all',     label: 'All' },
+        { id: 'music',   label: 'Music' },
+        { id: 'albums',  label: 'Albums' },
+        { id: 'artists', label: 'Artists' }
+      ]; track chip.id) {
+        <button class="chip" [class.chip--active]="activeFilter() === chip.id"
+          (click)="setFilter($any(chip.id))">{{ chip.label }}</button>
+      }
+    </div>
+  </div>
 
-    <!-- ── Safe area top spacer ── -->
-    <div class="status-spacer"></div>
+  <!-- Scrollable body -->
+  <div class="page-scroll">
 
-    <!-- ── Greeting + filter chips ── -->
-    <header class="home-header">
-      <h1 class="greeting">{{ greeting() }}</h1>
-
-      <div class="filter-chips" role="group" aria-label="Filter content">
-        @for (chip of [
-          { id: 'all',     label: 'All' },
-          { id: 'music',   label: 'Music' },
-          { id: 'albums',  label: 'Albums' },
-          { id: 'artists', label: 'Artists' }
-        ]; track chip.id) {
-          <button
-            class="chip"
-            [class.chip--active]="activeFilter() === chip.id"
-            (click)="setFilter($any(chip.id))">
-            {{ chip.label }}
-          </button>
-        }
-      </div>
-    </header>
-
-    <!-- ── Recently played 2-column grid ── -->
-    @if (shortcuts().length > 0) {
-      <section class="shortcuts-section">
+    <section class="shortcuts-section">
+      @if (shortcuts().length > 0) {
         <div class="shortcuts-grid">
           @for (item of shortcuts(); track item.id) {
             <app-shortcut-card [item]="item" />
           }
         </div>
-      </section>
-    } @else {
-      <section class="shortcuts-section">
+      } @else {
         <div class="shortcuts-grid">
-          @for (n of [1,2,3,4,5,6]; track n) {
-            <div class="shortcut-skeleton"></div>
-          }
+          @for (n of [1,2,3,4,5,6]; track n) { <div class="shortcut-skeleton"></div> }
         </div>
-      </section>
-    }
+      }
+    </section>
 
-    <!-- ── Picked for you ── -->
     <section class="carousel-section">
       <app-section-header title="Picked for you" [seeAll]="true" />
       <div class="carousel">
         @if (recentAlbums().length > 0) {
           @for (album of recentAlbums(); track album.id) {
-            <app-album-card
-              [album]="album"
-              size="md"
-              (select)="$event && null"
-              (play)="onAlbumPlay($event)" />
+            <app-album-card [album]="album" size="md" (play)="onAlbumPlay($event)" />
           }
         } @else {
-          @for (n of [1,2,3,4]; track n) {
-            <div class="album-skeleton"></div>
-          }
+          @for (n of [1,2,3,4]; track n) { <div class="album-skeleton"></div> }
         }
       </div>
     </section>
 
-    <!-- ── Trending albums ── -->
     <section class="carousel-section">
       <app-section-header title="Trending for you" [seeAll]="true" />
       <div class="carousel">
         @if (topAlbums().length > 0) {
           @for (album of topAlbums(); track album.id) {
-            <app-album-card
-              [album]="album"
-              size="md"
-              (select)="$event && null"
-              (play)="onAlbumPlay($event)" />
+            <app-album-card [album]="album" size="md" (play)="onAlbumPlay($event)" />
           }
         } @else {
-          @for (n of [1,2,3,4]; track n) {
-            <div class="album-skeleton"></div>
-          }
+          @for (n of [1,2,3,4]; track n) { <div class="album-skeleton"></div> }
         }
       </div>
     </section>
 
-    <!-- ── Your top artists ── -->
-    <section class="carousel-section">
-      <app-section-header title="Your top artists" [seeAll]="true" />
-      <div class="carousel">
-        @for (artist of libraryStore.artists().slice(0, 8); track artist.id) {
-          <div class="artist-card">
-            <div class="artist-artwork">
-              @if (artist.artworkUri) {
-                <img [src]="artist.artworkUri" [alt]="artist.name" loading="lazy" />
-              }
-            </div>
-            <p class="artist-name">{{ artist.name }}</p>
-            <p class="artist-sub">Artist</p>
-          </div>
-        }
-        @if (libraryStore.artists().length === 0) {
-          @for (n of [1,2,3,4]; track n) {
-            <div class="artist-skeleton"></div>
-          }
-        }
+    @if (libraryStore.isEmpty() && !libraryStore.isScanning()) {
+      <div class="empty-state">
+        <p class="empty-icon">🎵</p>
+        <p class="empty-title">No music yet</p>
+        <p class="empty-sub">Go to Library → tap Scan Device Music</p>
       </div>
-    </section>
+    }
 
-    <!-- Bottom padding for mini player + tab bar -->
     <div class="bottom-spacer"></div>
-
   </div>
-</ion-content>
+</div>

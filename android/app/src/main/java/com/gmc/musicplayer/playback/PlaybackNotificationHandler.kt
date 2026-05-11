@@ -5,7 +5,6 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import androidx.media3.common.Player
-import androidx.media3.session.MediaSession
 import androidx.media3.ui.PlayerNotificationManager
 
 private const val CHANNEL_ID   = "melodia_playback"
@@ -19,7 +18,6 @@ private const val NOTIFICATION_ID = 1001
 class PlaybackNotificationHandler(
     private val service: PlaybackService,
     private val player: Player,
-    private val mediaSession: MediaSession,
 ) {
     private val notificationManager: PlayerNotificationManager
 
@@ -52,7 +50,6 @@ class PlaybackNotificationHandler(
             .build()
 
         notificationManager.setPlayer(player)
-        notificationManager.setMediaSessionToken(mediaSession.sessionCompatToken)
         notificationManager.setUseNextAction(true)
         notificationManager.setUsePreviousAction(true)
         notificationManager.setUseStopAction(false)

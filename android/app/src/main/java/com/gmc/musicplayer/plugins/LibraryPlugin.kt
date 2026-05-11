@@ -67,7 +67,7 @@ class LibraryPlugin : Plugin() {
     }
 
     @PluginMethod
-    fun requestPermissions(call: PluginCall) {
+    override fun requestPermissions(call: PluginCall) {
         requestPermissionForAlias("readAudio", call, "permissionCallback")
     }
 
@@ -78,7 +78,7 @@ class LibraryPlugin : Plugin() {
     }
 
     @PluginMethod
-    fun checkPermissions(call: PluginCall) {
+    override fun checkPermissions(call: PluginCall) {
         call.resolve(JSObject().apply {
             put("granted", hasPermission(audioPermission()))
         })

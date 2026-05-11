@@ -1,18 +1,10 @@
 import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  inject,
-  signal,
+  ChangeDetectionStrategy, Component, computed,
+  inject, OnInit, signal,
 } from '@angular/core';
-import {
-  IonContent,
-  IonRefresher,
-  IonRefresherContent,
-} from '@ionic/angular/standalone';
 import { LibraryStore } from '../../core/state/library.store';
 import { PlayerStore } from '../../core/state/player.store';
-import { PlaybackBridgeService } from '../../core/bridge/playback-bridge.service';
+import { LibraryBridgeService } from '../../core/bridge/library-bridge.service';
 import { AlbumCardComponent } from '../../shared/components/album-card/album-card.component';
 import { ShortcutCardComponent, type Shortcut } from '../../shared/components/shortcut-card/shortcut-card.component';
 import { SectionHeaderComponent } from '../../shared/components/section-header/section-header.component';
@@ -23,18 +15,15 @@ type FilterChip = 'all' | 'music' | 'albums' | 'artists';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [
-    IonContent, IonRefresher, IonRefresherContent,
-    AlbumCardComponent, ShortcutCardComponent, SectionHeaderComponent,
-  ],
+  imports: [AlbumCardComponent, ShortcutCardComponent, SectionHeaderComponent],
   templateUrl: './home.component.html',
   styleUrl:    './home.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
   protected readonly libraryStore = inject(LibraryStore);
   protected readonly playerStore  = inject(PlayerStore);
-  private  readonly bridge        = inject(PlaybackBridgeService);
+  private  readonly libraryBridge = inject(LibraryBridgeService);
 
   protected readonly activeFilter = signal<FilterChip>('all');
 
@@ -46,14 +35,9 @@ export class HomeComponent {
   });
 
   protected readonly shortcuts = computed<Shortcut[]>(() =>
-    this.libraryStore.albums()
-      .slice(0, 6)
-      .map(a => ({
-        id:         String(a.id),
-        title:      a.title,
-        artworkUri: a.artworkUri,
-        subtitle:   a.artist,
-      })),
+    this.libraryStore.albums().slice(0, 6).map(a => ({
+      id: String(a.id), title: a.title, artworkUri: a.artworkUri, subtitle: a.artist,
+    })),
   );
 
   protected readonly recentAlbums = computed<Album[]>(() =>
@@ -64,15 +48,16 @@ export class HomeComponent {
     this.libraryStore.albums().slice(0, 10).reverse(),
   );
 
+  async ngOnInit(): Promise<void> {
+    if (this.libraryStore.isEmpty() && !this.libraryStore.isScanning()) {
+      const granted = await this.libraryBridge.checkPermissions();
+      if (granted) await this.libraryBridge.startScan(true);
+    }
+  }
+
   setFilter(f: FilterChip): void { this.activeFilter.set(f); }
 
   async onAlbumPlay(album: Album): Promise<void> {
-    // Phase 6: load album tracks into queue → play
     console.log('play album', album.id);
-  }
-
-  async handleRefresh(event: CustomEvent): Promise<void> {
-    await new Promise(r => setTimeout(r, 600));
-    (event.target as HTMLIonRefresherElement).complete();
   }
 }

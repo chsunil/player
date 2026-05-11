@@ -1,5 +1,5 @@
 .detail {
-  background: oklch(8% 0.018 280);
+  background: #121212;
   min-height: 100%;
 }
 
@@ -23,8 +23,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: oklch(17% 0.018 280);
-    color: oklch(42% 0.01 280);
+    background: #2a2a2a;
+    color: #606070;
     font-size: 80px;
   }
 }
@@ -37,7 +37,7 @@
     oklch(0% 0 0 / 0.25) 0%,
     oklch(0% 0 0 / 0)     35%,
     oklch(8% 0.018 280 / 0.7)  70%,
-    oklch(8% 0.018 280)   100%
+    #121212   100%
   );
 }
 
@@ -57,17 +57,17 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: oklch(0% 0 0 / 0.35);
+  background: #00000059;
   border: none;
   border-radius: 50%;
   width: 40px;
   height: 40px;
   cursor: pointer;
-  color: oklch(93% 0.01 280);
+  color: #eeeef2;
   transition: background 100ms ease;
 
   ion-icon { font-size: 22px; pointer-events: none; }
-  &:active { background: oklch(0% 0 0 / 0.55); }
+  &:active { background: #0000008c; }
 }
 
 /* Album meta */
@@ -84,7 +84,7 @@
   font-weight: 700;
   color: #fff;
   line-height: 1.2;
-  text-shadow: 0 1px 4px oklch(0% 0 0 / 0.5);
+  text-shadow: 0 1px 4px #00000080;
 }
 
 .hero__artist {
@@ -97,7 +97,7 @@
 .hero__info {
   margin: 0;
   font-size: 13px;
-  color: oklch(62% 0.015 280);
+  color: #9090a8;
 }
 
 /* ── Action row ── */
@@ -121,7 +121,7 @@
   background: none;
   border: none;
   cursor: pointer;
-  color: oklch(62% 0.015 280);
+  color: #9090a8;
   padding: 8px;
   min-width: 44px;
   min-height: 44px;
@@ -129,7 +129,7 @@
   transition: color 100ms ease;
 
   ion-icon { font-size: 26px; pointer-events: none; }
-  &:active { color: oklch(93% 0.01 280); }
+  &:active { color: #eeeef2; }
 }
 
 .play-btn {
@@ -139,7 +139,7 @@
   background: none;
   border: none;
   cursor: pointer;
-  color: oklch(65% 0.22 280);
+  color: #7c6aff;
   padding: 4px;
   border-radius: 50%;
   transition: transform 100ms ease, color 100ms ease;
@@ -154,7 +154,7 @@
 .empty {
   padding: 40px 20px;
   text-align: center;
-  color: oklch(42% 0.01 280);
+  color: #606070;
   font-size: 15px;
 }
 

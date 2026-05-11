@@ -4,7 +4,7 @@
   display: flex;
   align-items: center;
   gap: 0;
-  background: oklch(17% 0.018 280);
+  background: #2a2a2a;
   border-radius: 6px;
   overflow: hidden;
   cursor: pointer;
@@ -13,19 +13,19 @@
   -webkit-user-select: none;
   user-select: none;
 
-  &:active { background: oklch(22% 0.018 280); }
-  &:focus-visible { outline: 2px solid oklch(65% 0.22 280); outline-offset: 1px; }
+  &:active { background: #363636; }
+  &:focus-visible { outline: 2px solid #7c6aff; outline-offset: 1px; }
 }
 
 .shortcut__artwork {
   width: 56px;
   height: 56px;
   flex-shrink: 0;
-  background: oklch(21% 0.018 280);
+  background: #333333;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: oklch(42% 0.01 280);
+  color: #606070;
   font-size: 22px;
 
   img {
@@ -42,7 +42,7 @@
   padding: 0 12px;
   font-size: 13px;
   font-weight: 700;
-  color: oklch(93% 0.01 280);
+  color: #eeeef2;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

@@ -96,6 +96,19 @@ export class LibraryBridgeService implements OnDestroy {
     this.libraryStore.setLastSyncAt(Date.now());
     const count = Number(data['trackCount'] ?? 0);
     console.info(`[LibraryBridge] Scan complete. ${count} tracks indexed.`);
+    // Auto-load first page of tracks into store
+    void this.loadAllIntoStore();
+  }
+
+  async loadAllIntoStore(): Promise<void> {
+    const tracks  = await this.getTracks(0, 2000);
+    const albums  = await this.getAlbums();
+    const artists = await this.getArtists();
+    this.zone.run(() => {
+      this.libraryStore.setTracks(tracks as never);
+      this.libraryStore.setAlbums(albums as never);
+      this.libraryStore.setArtists(artists as never);
+    });
   }
 
   private async call(

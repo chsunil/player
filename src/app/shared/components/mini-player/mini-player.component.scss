@@ -3,7 +3,7 @@
 /* ── Mini player bar — Spotify style ── */
 .mini {
   position: relative;
-  background: oklch(21% 0.018 280);
+  background: #333333;
   border-radius: 10px;
   overflow: hidden;
   cursor: pointer;
@@ -21,12 +21,12 @@
   left: 0;
   right: 0;
   height: 2px;
-  background: oklch(100% 0 0 / 0.12);
+  background: #ffffff1f;
 }
 
 .mini__progress-fill {
   height: 100%;
-  background: oklch(93% 0.01 280);
+  background: #eeeef2;
   border-radius: 0 1px 1px 0;
   transition: width 500ms linear;
   will-change: width;
@@ -48,7 +48,7 @@
   border-radius: 6px;
   overflow: hidden;
   flex-shrink: 0;
-  background: oklch(14% 0.018 280);
+  background: #242424;
 
   img {
     width: 100%;
@@ -64,7 +64,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: oklch(42% 0.01 280);
+  color: #606070;
   font-size: 20px;
 }
 
@@ -78,7 +78,7 @@
   margin: 0;
   font-size: 14px;
   font-weight: 600;
-  color: oklch(93% 0.01 280);
+  color: #eeeef2;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -88,7 +88,7 @@
 .mini__artist {
   margin: 2px 0 0;
   font-size: 12px;
-  color: oklch(62% 0.015 280);
+  color: #9090a8;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -112,7 +112,7 @@
   cursor: pointer;
   padding: 10px;
   border-radius: 50%;
-  color: oklch(93% 0.01 280);
+  color: #eeeef2;
   min-width: 44px;
   min-height: 44px;
   transition: opacity 80ms ease;
@@ -132,7 +132,7 @@
   width: 22px;
   height: 22px;
   border: 2px solid oklch(93% 0.01 280 / 0.25);
-  border-top-color: oklch(93% 0.01 280);
+  border-top-color: #eeeef2;
   border-radius: 50%;
   animation: spin 700ms linear infinite;
 }

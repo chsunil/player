@@ -9,26 +9,26 @@
 /* ── Design tokens ── */
 @theme {
   /* Background scale */
-  --color-bg:             oklch(8% 0.018 280);
-  --color-bg-elevated:    oklch(11% 0.018 280);
-  --color-bg-card:        oklch(14% 0.018 280);
-  --color-surface:        oklch(17% 0.018 280);
-  --color-surface-high:   oklch(21% 0.018 280);
+  --color-bg:             #121212;
+  --color-bg-elevated:    #1a1a1a;
+  --color-bg-card:        #242424;
+  --color-surface:        #2a2a2a;
+  --color-surface-high:   #333333;
 
   /* Accent */
-  --color-accent:         oklch(65% 0.22 280);
-  --color-accent-soft:    oklch(65% 0.22 280 / 0.18);
-  --color-accent-glow:    oklch(65% 0.22 280 / 0.35);
+  --color-accent:         #7c6aff;
+  --color-accent-soft:    #7c6aff30;
+  --color-accent-glow:    #7c6aff59;
 
   /* Text */
-  --color-text:           oklch(93% 0.01 280);
-  --color-text-secondary: oklch(62% 0.015 280);
-  --color-text-muted:     oklch(42% 0.01 280);
+  --color-text:           #eeeef2;
+  --color-text-secondary: #9090a8;
+  --color-text-muted:     #606070;
 
   /* Utility */
-  --color-divider:        oklch(100% 0 0 / 0.06);
-  --color-glass:          oklch(100% 0 0 / 0.05);
-  --color-scrim:          oklch(0% 0 0 / 0.72);
+  --color-divider:        #ffffff0f;
+  --color-glass:          #ffffff0d;
+  --color-scrim:          #000000b8;
 
   /* Status */
   --color-success:        oklch(72% 0.18 145);
@@ -48,9 +48,9 @@
   --radius-btn:        10px;
 
   /* Elevation shadows */
-  --shadow-card:   0 2px 16px oklch(0% 0 0 / 0.45);
-  --shadow-modal:  0 8px 40px oklch(0% 0 0 / 0.65);
-  --shadow-player: 0 -4px 30px oklch(0% 0 0 / 0.6);
+  --shadow-card:   0 2px 16px #00000073;
+  --shadow-modal:  0 8px 40px #000000a6;
+  --shadow-player: 0 -4px 30px #00000099;
 
   /* Duration */
   --duration-instant: 80ms;
@@ -86,12 +86,12 @@ html, body {
 
 /* ── Ionic variable overrides ── */
 :root {
-  --ion-background-color: oklch(8% 0.018 280);
-  --ion-text-color: oklch(93% 0.01 280);
-  --ion-color-primary: oklch(65% 0.22 280);
+  --ion-background-color: #121212;
+  --ion-text-color: #eeeef2;
+  --ion-color-primary: #7c6aff;
   --ion-color-primary-contrast: #ffffff;
-  --ion-color-primary-shade: oklch(56% 0.22 280);
-  --ion-color-primary-tint: oklch(72% 0.20 280);
+  --ion-color-primary-shade: #5a48e0;
+  --ion-color-primary-tint: #9d8fff;
   --ion-toolbar-background: transparent;
   --ion-tab-bar-background: transparent;
   --ion-tab-bar-border-color: transparent;
@@ -106,31 +106,31 @@ html, body {
 
 /* ── Selection ── */
 ::selection {
-  background: oklch(65% 0.22 280 / 0.25);
+  background: #7c6aff40;
 }
 
 /* ── Focus ── */
 :focus-visible {
-  outline: 2px solid oklch(65% 0.22 280);
+  outline: 2px solid #7c6aff;
   outline-offset: 2px;
   border-radius: 4px;
 }
 
 /* ── Glass surface ── */
 .glass {
-  background: oklch(100% 0 0 / 0.05);
+  background: #ffffff0d;
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
 }
 
 /* ── Artwork shadow ── */
 .artwork-shadow {
-  box-shadow: 0 8px 32px oklch(0% 0 0 / 0.5), 0 2px 8px oklch(0% 0 0 / 0.3);
+  box-shadow: 0 8px 32px #00000080, 0 2px 8px #0000004d;
 }
 
 /* ── Text gradient ── */
 .text-gradient-accent {
-  background: linear-gradient(135deg, oklch(65% 0.22 280), oklch(72% 0.18 310));
+  background: linear-gradient(135deg, #7c6aff, oklch(72% 0.18 310));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -159,13 +159,13 @@ ion-tab-bar {
 }
 
 ion-tab-button {
-  --color: oklch(42% 0.01 280);
-  --color-selected: oklch(65% 0.22 280);
+  --color: #606070;
+  --color-selected: #7c6aff;
   --padding-top: 8px;
   --padding-bottom: 8px;
-  --ripple-color: oklch(65% 0.22 280 / 0.15);
+  --ripple-color: #7c6aff26;
 }
 
 .ion-page {
-  background: oklch(8% 0.018 280);
+  background: #121212;
 }

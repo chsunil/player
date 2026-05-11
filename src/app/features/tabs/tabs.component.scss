@@ -1,53 +1,62 @@
-:host { display: flex; flex-direction: column; height: 100%; }
-
-.shell {
+:host {
   display: flex;
   flex-direction: column;
   height: 100%;
+  overflow: hidden;
+  background: #121212;
+}
+
+.tabs-shell {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-height: 0;
+}
+
+.tab-content {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
   position: relative;
 }
 
-/* ── Tab bar ── */
 .tab-bar {
-  --background: oklch(11% 0.018 280);
-  --border: none;
-  border-top: 1px solid oklch(100% 0 0 / 0.08);
+  flex-shrink: 0;
+  display: flex;
+  align-items: stretch;
+  background: #1a1a1a;
+  border-top: 1px solid #ffffff14;
   height: calc(60px + env(safe-area-inset-bottom));
   padding-bottom: env(safe-area-inset-bottom);
 }
 
 .tab-btn {
-  --color:          oklch(62% 0.015 280);
-  --color-selected: oklch(93% 0.01 280);
-  --padding-top: 8px;
-  --padding-bottom: 0;
+  flex: 1;
+  display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
   gap: 4px;
-}
-
-.tab-icon {
-  width: 24px;
-  height: 24px;
-  display: block;
+  text-decoration: none;
+  color: #7a7a8a;
+  cursor: pointer;
+  padding: 8px 4px 0;
   transition: color 120ms ease;
+  -webkit-user-select: none;
+  user-select: none;
+
+  &--active { color: #eeeef2; }
+  &:active { opacity: 0.7; }
 }
 
-.tab-label {
-  font-size: 11px;
-  font-weight: 600;
-  line-height: 1;
-  letter-spacing: 0.01em;
-}
+.tab-icon { width: 24px; height: 24px; flex-shrink: 0; }
 
-/* ── Mini player slot ── */
+.tab-label { font-size: 11px; font-weight: 600; line-height: 1; }
+
 .mini-slot {
-  position: absolute;
-  bottom: calc(60px + env(safe-area-inset-bottom));
-  left: 0;
-  right: 0;
+  flex-shrink: 0;
   padding: 0 8px 6px;
-  z-index: 100;
-  pointer-events: auto;
   animation: slideUp 220ms cubic-bezier(0.0, 0.0, 0.3, 1) both;
 }
 

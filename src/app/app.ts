@@ -1,13 +1,14 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
+import { RouterOutlet } from '@angular/router';
 import { PlaybackBridgeService } from './core/bridge/playback-bridge.service';
 import { LibraryBridgeService } from './core/bridge/library-bridge.service';
 
 @Component({
   selector:        'app-root',
   standalone:      true,
-  imports:         [IonApp, IonRouterOutlet],
-  template:        `<ion-app><ion-router-outlet /></ion-app>`,
+  imports:         [RouterOutlet],
+  template:        `<router-outlet />`,
+  styles:          [`:host { display: block; height: 100%; }`],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class App implements OnInit {

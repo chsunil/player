@@ -1,86 +1,57 @@
-<ion-header class="ion-no-border lib-header">
-  <ion-toolbar>
+<div class="page">
+
+  <div class="page-header">
     <div class="lib-title-row">
       <h1 class="lib-title">Your Library</h1>
-      <button class="add-btn" aria-label="Add playlist">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+      <button class="icon-btn" aria-label="Scan" (click)="handleScan()">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
           <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
         </svg>
       </button>
     </div>
-  </ion-toolbar>
 
-  <!-- Search -->
-  <ion-toolbar>
-    <ion-searchbar
-      placeholder="Find in your library"
-      [debounce]="250"
-      (ionInput)="onSearch($event)">
-    </ion-searchbar>
-  </ion-toolbar>
+    <input class="search-input" type="search" placeholder="Find in your library"
+      [value]="searchQuery()" (input)="onSearch($event)" />
 
-  <!-- View tabs -->
-  <ion-toolbar>
     <div class="view-tabs" role="tablist">
       @for (v of views; track v.id) {
-        <button
-          class="view-tab"
-          [class.view-tab--active]="activeView() === v.id"
-          role="tab"
-          [attr.aria-selected]="activeView() === v.id"
-          (click)="setView(v.id)">
-          {{ v.label }}
-        </button>
+        <button class="view-tab" [class.view-tab--active]="activeView() === v.id"
+          (click)="setView(v.id)">{{ v.label }}</button>
       }
     </div>
-  </ion-toolbar>
-</ion-header>
+  </div>
 
-<ion-content [fullscreen]="true">
-  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
-    <ion-refresher-content></ion-refresher-content>
-  </ion-refresher>
+  <div class="page-scroll">
 
-  <!-- Scan progress -->
-  @if (store.isScanning()) {
-    <div class="scan-bar-wrap">
-      <div class="scan-bar">
-        <div
-          class="scan-bar-fill"
-          [style.width.%]="store.scanProgress().total > 0
-            ? (store.scanProgress().indexed / store.scanProgress().total * 100)
-            : 0">
+    @if (store.isScanning()) {
+      <div class="scan-bar-wrap">
+        <div class="scan-bar">
+          <div class="scan-bar-fill"
+            [style.width.%]="store.scanProgress().total > 0
+              ? (store.scanProgress().indexed / store.scanProgress().total * 100) : 0">
+          </div>
         </div>
-      </div>
-      <p class="scan-label">
-        Scanning · {{ store.scanProgress().indexed | number }} tracks
-      </p>
-    </div>
-  }
-
-  <!-- ── ALBUMS VIEW ── -->
-  @if (activeView() === 'albums') {
-    @if (filteredAlbums().length > 0) {
-      <div class="album-grid">
-        @for (album of filteredAlbums(); track album.id) {
-          <app-album-card
-            [album]="album"
-            size="md"
-            (select)="onAlbumSelect($event)"
-            (play)="onAlbumSelect($event)" />
-        }
-      </div>
-    } @else {
-      <div class="empty-state">
-        <p class="empty-title">No albums</p>
-        <p class="empty-sub">Pull down to scan your device</p>
+        <p class="scan-label">Scanning · {{ store.scanProgress().indexed }} tracks found</p>
       </div>
     }
-  }
 
-  <!-- ── ARTISTS VIEW ── -->
-  @if (activeView() === 'artists') {
-    <div class="artist-list">
+    @if (activeView() === 'albums') {
+      @if (filteredAlbums().length > 0) {
+        <div class="album-grid">
+          @for (album of filteredAlbums(); track album.id) {
+            <app-album-card [album]="album" size="md"
+              (select)="onAlbumSelect($event)" (play)="onAlbumSelect($event)" />
+          }
+        </div>
+      } @else if (!store.isScanning()) {
+        <div class="empty-state">
+          <p class="empty-title">No albums</p>
+          <p class="empty-sub">Tap + above to scan device</p>
+        </div>
+      }
+    }
+
+    @if (activeView() === 'artists') {
       @for (artist of filteredArtists(); track artist.id) {
         <div class="artist-row">
           <div class="artist-avatar">
@@ -90,46 +61,32 @@
           </div>
           <div class="artist-info">
             <p class="artist-name">{{ artist.name }}</p>
-            <p class="artist-meta">
-              Artist · {{ artist.albumCount }} {{ artist.albumCount === 1 ? 'album' : 'albums' }}
-            </p>
+            <p class="artist-meta">{{ artist.albumCount }} albums</p>
           </div>
         </div>
       }
-      @if (filteredArtists().length === 0) {
-        <div class="empty-state">
-          <p class="empty-title">No artists</p>
-          <p class="empty-sub">Pull down to scan your device</p>
-        </div>
+      @empty {
+        @if (!store.isScanning()) {
+          <div class="empty-state"><p class="empty-title">No artists</p></div>
+        }
       }
-    </div>
-  }
+    }
 
-  <!-- ── TRACKS VIEW ── -->
-  @if (activeView() === 'tracks') {
-    <div class="track-list">
+    @if (activeView() === 'tracks') {
       @for (track of filteredTracks(); track track.id; let i = $index) {
-        <app-track-item
-          [track]="track"
-          [index]="i"
-          (play)="onTrackPlay($event)" />
+        <app-track-item [track]="track" [index]="i" (play)="onTrackPlay($event)" />
       }
-      @if (filteredTracks().length === 0) {
-        <div class="empty-state">
-          <p class="empty-title">No songs</p>
-          <p class="empty-sub">Pull down to scan your device</p>
-        </div>
+      @empty {
+        @if (!store.isScanning()) {
+          <div class="empty-state"><p class="empty-title">No songs</p></div>
+        }
       }
-    </div>
-  }
+    }
 
-  <!-- ── FOLDERS VIEW ── -->
-  @if (activeView() === 'folders') {
-    <div class="empty-state">
-      <p class="empty-title">Folders</p>
-      <p class="empty-sub">Coming in Phase 6</p>
-    </div>
-  }
+    @if (activeView() === 'folders') {
+      <div class="empty-state"><p class="empty-title">Folders coming soon</p></div>
+    }
 
-  <div class="bottom-spacer"></div>
-</ion-content>
+    <div class="bottom-spacer"></div>
+  </div>
+</div>

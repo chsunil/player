@@ -1,8 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import {
-  IonTabs, IonTabBar, IonTabButton,
-  IonRouterOutlet, IonModal,
-} from '@ionic/angular/standalone';
+import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
+import { IonModal } from '@ionic/angular/standalone';
 import { PlayerStore } from '../../core/state/player.store';
 import { MiniPlayerComponent } from '../../shared/components/mini-player/mini-player.component';
 import { FullPlayerComponent } from '../player/full-player/full-player.component';
@@ -11,8 +9,8 @@ import { FullPlayerComponent } from '../player/full-player/full-player.component
   selector: 'app-tabs',
   standalone: true,
   imports: [
-    IonTabs, IonTabBar, IonTabButton,
-    IonRouterOutlet, IonModal,
+    RouterOutlet, RouterLink, RouterLinkActive,
+    IonModal,
     MiniPlayerComponent, FullPlayerComponent,
   ],
   templateUrl: './tabs.component.html',
